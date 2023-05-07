@@ -1,0 +1,209 @@
+{% load static %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Travel Blog</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
+.w3-bar-block .w3-bar-item {padding:20px}
+</style>
+</head>
+<body>
+
+<!-- Sidebar (hidden by default) -->
+<nav class="w3-sidebar w3-bar-block w3-card w3-top w3-xlarge w3-animate-left" style="display:none;z-index:2;width:40%;min-width:300px" id="mySidebar">
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button">✕</a>
+  <a href="#travel" onclick="w3_close()" class="w3-bar-item w3-button">Podróże</a>
+  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">O mnie</a>
+  <a id="logout">
+      {% if user.is_authenticated %}
+        <a class="w3-bar-item w3-button" onclick="logout()">Wyloguj</a>
+      {% else %}
+        <a class="w3-bar-item w3-button" onclick="w3_loginOpen()"></a>
+      {% endif %}
+  </a>
+</nav>
+
+<!-- Top menu -->
+<div class="w3-top">
+  <div class="w3-white w3-xlarge" style="max-width:1200px;margin:auto">
+    <div class="w3-button w3-padding-16 w3-left" onclick="w3_open()">☰</div>
+    <div class="w3-right w3-padding-16" id="loginButton">
+      {% if user.is_authenticated %}
+        Logged in as {{ user.username }}
+      {% else %}
+        <div class="w3-button" onclick="w3_loginOpen()">Log in</div>
+      {% endif %}
+    </div>
+    <div class="w3-center w3-padding-16 w3-xxxlarge"><a href="/" style="text-decoration:none; color:inherit;">Travel Blog</a></div>
+  </div>
+</div>
+
+<!-- Popup login -->
+<div id="loginPopup" class="w3-modal" onclick="w3_close()">
+  <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:400px" onclick="event.stopPropagation()">
+    <div class="w3-container w3-light-grey w3-center">
+      <h2>Login</h2>
+    </div>
+    <div class="w3-container">
+      <form id="loginForm">
+        <div class="w3-section">
+          <label><b>Username</b></label>
+          <input class="w3-input w3-border" type="text" placeholder="Enter Username" name="username" required>
+        </div>
+        <div class="w3-section">
+          <label><b>Password</b></label>
+          <input class="w3-input w3-border" type="password" placeholder="Enter Password" name="password" required>
+        </div>
+        <button class="w3-button w3-block w3-section w3-blue w3-ripple w3-padding" type="submit">Login</button>
+      </form>
+      <div id="loginError" style="color: red"></div>
+    <div class="w3-container w3-center w3-padding-16">
+    	<a href="{% url 'registration' %}">No account? Register</a>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
+
+  <!-- First Photo Grid-->
+  <div class="w3-row-padding w3-padding-16 w3-center" id="travel">
+    <div class="w3-third">
+      <img src="{% static 'img/bora_bora.png' %}" alt="Bora Bora" style="width:100%" class="w3-button">
+      <h3>Bora Bora: Raj znaleziono</h3>
+      <p>Bora Bora to raj na ziemi, z turkusowymi wodami, białymi plażami i luksusowymi kurortami.</p>
+    </div>
+    <div class="w3-third">
+      <img src="{% static 'img/egypt.png' %}" alt="Egypt" style="width:100%" class="w3-button">
+      <h3>Egipt: Ziemia faraonów</h3>
+      <p>Egipt to kraj bogatej historii, z zapierającymi dech w piersiach zabytkami i piramidami, które zachwycają każdego.</p>
+    </div>
+    <div class="w3-third">
+      <img src="{% static 'img/tokyo.png' %}" alt="Tokyo" style="width:100%" class="w3-button">
+      <h3>Tokio: Miasto kontrastów</h3>
+      <p>Tokio to miasto, które łączy tradycję i nowoczesność, z neonowymi światłami i zabytkami, które robią wrażenie.</p>
+    </div>
+  </div>
+
+  <!-- Second Photo Grid-->
+  <div class="w3-row-padding w3-padding-16 w3-center">
+    <div class="w3-third">
+      <img src="{% static 'img/rome.png' %}" alt="Popsicle" style="width:100%" class="w3-button">
+      <h3>Rzym: Wieczna piękność</h3>
+      <p>Rzym to miasto, które żyje historią, z zachwycającymi ruinami, wspaniałymi muzeami i pięknymi zabytkami.</p>
+    </div>
+    <div class="w3-third">
+      <img src="{% static 'img/iceland.png' %}" alt="Salmon" style="width:100%" class="w3-button">
+      <h3>Islandia: Ziemia lodu i ognia</h3>
+      <p>Islandia to kraj kontrastów, z lodowcami, gejzerami, wulkanami, wodospadami i piękną przyrodą, która zapiera dech w piersiach.</p>
+    </div>
+    <div class="w3-third">
+      <img src="{% static 'img/morocco.png' %}" alt="Sandwich" style="width:100%" class="w3-button">
+      <h3>Maroko: Gobelin kultury</h3>
+      <p>Maroko to kraj o bogatej kulturze, z kolorowymi targami, pięknymi pałacami i wspaniałą kuchnią, która przyciąga turystów z całego świata.</p>
+    </div>
+  </div>
+
+  <hr id="about">
+
+  <!-- About Section -->
+  <div class="w3-container w3-padding-32 w3-center">
+    <h3>O mnie</h3><br>
+    <img src="{% static 'img/me.png' %}" alt="O mnie" class="w3-image" style="display:block;margin:auto" width="800" height="533">
+    <div class="w3-padding-32">
+      <h4><b>Kim jestem?</b></h4>
+      <h6><i>Podróże to jedyna rzecz, za którą wydajesz pieniądze, a stajesz się bogatszy.</i></h6>
+      <p>Interesuję się podróżami, kulturą oraz robieniem zdjęć. Uwielbiam poznawać nowe miejsca, tradycje i różnorodność sztuki. Fotografowanie stanowi dla mnie ważny element dokumentowania moich przygód i zapisu wspomnień z podróży. Stawiam na autentyczne doświadczenia, dlatego zawsze staram się poznać kulturę, ludzi i krajobrazy danego miejsca jak najbliżej.</p>
+    </div>
+  </div>
+  <hr>
+
+<!-- End page content -->
+</div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+
+function w3_loginOpen() {
+  document.getElementById("loginPopup").style.display = "block";
+
+  window.addEventListener("click", function(event) {
+    var popup = document.getElementById("loginPopup");
+    if (event.target == popup) {
+      w3_loginClose();
+    }
+  });
+
+  var loginButton = document.querySelector("#loginPopup button[type='submit']");
+  loginButton.addEventListener("click", function(event) {
+    event.preventDefault();  // Prevent form submission
+    var form = document.querySelector("#loginForm");
+    var formData = new FormData(form);
+    formData.append("csrfmiddlewaretoken", document.querySelector("input[name=csrfmiddlewaretoken]").value);
+
+    fetch("{% url 'login' %}", {
+      method: "POST",
+      body: formData,
+      headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 401) {
+          throw new Error("Nieprawidłowy login lub hasło");
+        } else {
+          throw new Error("Login failed");
+        }
+      })
+      .then(data => {
+        if (data.success) {
+          window.location.reload();  // Reload page to update login status
+
+        } else {
+          document.querySelector("#loginError").textContent = "Invalid username or password.";
+        }
+      })
+      .catch(error => {
+        document.querySelector("#loginError").textContent = error;
+      });
+  });
+}
+
+function w3_loginClose() {
+  // Close the login popup when clicking outside of it
+  document.getElementById("loginPopup").style.display = "none";
+}
+
+function logout() {
+  fetch("{% url 'logout' %}")
+    .then(response => {
+      if (response.ok) {
+        window.location.reload();  // Reload page to update login status
+      } else {
+        throw new Error("Logout failed");
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert("Logout failed. Please try again.");
+    });
+}
+
+</script>
+
+</body>
+</html>
