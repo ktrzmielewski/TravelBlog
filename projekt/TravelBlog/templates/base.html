@@ -60,6 +60,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
           <label><b>Password</b></label>
           <input class="w3-input w3-border" type="password" placeholder="Enter Password" name="password" required>
         </div>
+        {% csrf_token %}
         <button class="w3-button w3-block w3-section w3-blue w3-ripple w3-padding" type="submit">Login</button>
       </form>
       <div id="loginError" style="color: red"></div>
@@ -71,45 +72,33 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Karma", sans-serif}
 </div>
 
 <!-- !PAGE CONTENT! -->
+
+{% block content %}
+{% endblock %}
+
 <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
 
-  <!-- First Photo Grid-->
-  <div class="w3-row-padding w3-padding-16 w3-center" id="travel">
-    <div class="w3-third">
-      <img src="{% static 'img/bora_bora.png' %}" alt="Bora Bora" style="width:100%" class="w3-button">
-      <h3>Bora Bora: Raj znaleziono</h3>
-      <p>Bora Bora to raj na ziemi, z turkusowymi wodami, białymi plażami i luksusowymi kurortami.</p>
-    </div>
-    <div class="w3-third">
-      <img src="{% static 'img/egypt.png' %}" alt="Egypt" style="width:100%" class="w3-button">
-      <h3>Egipt: Ziemia faraonów</h3>
-      <p>Egipt to kraj bogatej historii, z zapierającymi dech w piersiach zabytkami i piramidami, które zachwycają każdego.</p>
-    </div>
-    <div class="w3-third">
-      <img src="{% static 'img/tokyo.png' %}" alt="Tokyo" style="width:100%" class="w3-button">
-      <h3>Tokio: Miasto kontrastów</h3>
-      <p>Tokio to miasto, które łączy tradycję i nowoczesność, z neonowymi światłami i zabytkami, które robią wrażenie.</p>
-    </div>
-  </div>
+  <hr id="travel">
 
-  <!-- Second Photo Grid-->
+  <!--Photo Grid-->
   <div class="w3-row-padding w3-padding-16 w3-center">
-    <div class="w3-third">
-      <img src="{% static 'img/rome.png' %}" alt="Popsicle" style="width:100%" class="w3-button">
-      <h3>Rzym: Wieczna piękność</h3>
-      <p>Rzym to miasto, które żyje historią, z zachwycającymi ruinami, wspaniałymi muzeami i pięknymi zabytkami.</p>
-    </div>
-    <div class="w3-third">
-      <img src="{% static 'img/iceland.png' %}" alt="Salmon" style="width:100%" class="w3-button">
-      <h3>Islandia: Ziemia lodu i ognia</h3>
-      <p>Islandia to kraj kontrastów, z lodowcami, gejzerami, wulkanami, wodospadami i piękną przyrodą, która zapiera dech w piersiach.</p>
-    </div>
-    <div class="w3-third">
-      <img src="{% static 'img/morocco.png' %}" alt="Sandwich" style="width:100%" class="w3-button">
-      <h3>Maroko: Gobelin kultury</h3>
-      <p>Maroko to kraj o bogatej kulturze, z kolorowymi targami, pięknymi pałacami i wspaniałą kuchnią, która przyciąga turystów z całego świata.</p>
-    </div>
+      {% for post in posts %}
+          <div class="w3-half">
+              <a href="{% url 'post_detail' pk=post.pk %}">
+                  <img style="width:100%" class="w3_button" src="{{ post.image.url }}" alt="Post Image">
+              </a>
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.short_description }}</p>
+          </div>
+      {% endfor %}
   </div>
+  <hr>
+
+  {% if user_group == 'Blogger' %}
+    <div class="w3-center">
+      <a href="/new_post" class="w3-button w3-green">Nowy Post</a>
+    </div>
+  {% endif %}
 
   <hr id="about">
 

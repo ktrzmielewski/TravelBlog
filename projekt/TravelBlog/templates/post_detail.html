@@ -1,7 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <img src="{{ post.image.url }}" alt="{{ post.title }}">
-  <h3>{{ post.title }}</h3>
-  <p>{{ post.description }}</p>
+<div class="w3-row-padding w3-padding-48 w3-center">
+    <div class="w3-center w3-padding-48 w3-xxlarge">{{ post.title }}</div>
+    <div class="w3-center w3-large">{{ post.content }}</div>
+    <img src="{{ post.image.url }}" alt="Post Image">
+    <div class="w3-right-align">Autor: {{ post.author }}</div>
+    <div class="w3-right-align">Utworzono: {{ post.created_at }}</div>
+</div>
+<div class="w3-container">
+    <h3>Nowy Komentarz:</h3>
+    {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'post_detail' pk=post.pk %}">
+            {% csrf_token %}
+            <label for="{{ form.content.id_for_label }}"><b></b></label>
+            {{ form.content }}
+            <div style="margin-top: 10px;"><button type="submit">Dodaj komentarz</button></div>
+        </form>
+    {% endif %}
+
+    <h3>Komentarze:</h3>
+
+    {% for comment in post.comments.all %}
+        <div class="w3-container w3-card-4">
+            <p>{{ comment.content }}</p>
+        </div>
+        <div class="w3-container w3-card-4">
+            <p>Przez: {{ comment.author }}</p>
+            <p>Dodano: {{ comment.created_at }}</p>
+            {% if user_group == 'Blogger' %}
+                <div class="w3-right">
+                    <form method="POST" action="{% url 'comment_delete' comment.pk %}">
+                        {% csrf_token %}
+                        <button type="submit">Usuń komentarz</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>Brak komentarzy.</p>
+    {% endfor %}
+</div>
 {% endblock %}

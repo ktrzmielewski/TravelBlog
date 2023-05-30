@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="w3-row-padding w3-padding-48 w3-center">
+  <h2>New Post</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Dodaj</button>
+  </form>
+</div>
+{% endblock %}
