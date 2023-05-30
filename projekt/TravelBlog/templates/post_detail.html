@@ -9,8 +9,8 @@
     <div class="w3-right-align">Utworzono: {{ post.created_at }}</div>
 </div>
 <div class="w3-container">
-    <h3>Nowy Komentarz:</h3>
     {% if user.is_authenticated %}
+    <h3>Nowy Komentarz:</h3>
         <form method="POST" action="{% url 'post_detail' pk=post.pk %}">
             {% csrf_token %}
             <label for="{{ form.content.id_for_label }}"><b></b></label>
